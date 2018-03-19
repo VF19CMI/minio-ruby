@@ -46,6 +46,19 @@ module MinioRuby
       https.request(req)
     end
 
+    def delete_object(bucket_name, object_name)
+      url = "#{end_point}/#{bucket_name}/#{object_name}"
+      headers = sign_headers 'put', url
+      uri = URI.parse(end_point)
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = secure
+
+      req = Net::HTTP::Delete.new(url, headers)
+      req.body = data
+      https.set_debug_output($stdout) if debug
+      https.request(req)
+    end
+
 
     def bucket_exists(bucket_name); end
 
